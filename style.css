@@ -1,3 +1,6 @@
+* {
+    box-sizing: border-box;
+}
 body{
     margin:0;
     background-image: url("images/background.png");
@@ -10,16 +13,16 @@ body{
     box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
     margin-top: 15px;
     margin-bottom: 15px;
-    border-radius: 3%;
     padding: 10px;
     padding-left: 20px;
+    padding-right: 20px;
 }
 .task-area{
     border: 1px solid lightgray;
     margin-top: 2em;
 
 }
-.task-tabs{
+div.task-tabs{
     display: flex;
     border-bottom: 1px solid lightgray;
     position: relative;
@@ -38,9 +41,48 @@ body{
     padding: 0;
     margin-top: 12px;
 }
-#task{
+#task1{
     display: flex;
     justify-content: space-between;
-    padding: 1em;
+    padding: 0;
     border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+    
+}
+#task2{
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+    border-bottom: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+}
+.task-done {
+    text-decoration: line-through;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    width: 340px;
+    background-color: lightgoldenrodyellow;
+}
+#reply {
+    border: none;
+}
+#reply-icon {
+    padding-bottom: 2.2px;
+}
+.check-icon {
+    padding-bottom: 2px;
+}
+#check {
+    border: none;
+}
+.icon-delete {
+    width: 20px;
+    height: 22.2px;
+    padding-bottom: 2px;
+}
+.delete {
+    margin-left: 20px;
+    margin-right: 5px;
+    height: 30.8px;
+    border: none;
 }
