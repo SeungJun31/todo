@@ -11,8 +11,14 @@
 let taskInput = document.getElementById("task-input");
 let addButton = document.getElementById("add-button");
 let taskList = [];
-
+let tabs = document.querySelectorAll(".task-tabs div")
 addButton.addEventListener("click", addTask);
+
+for(let i=1; i<tabs.length; i++) {
+  tabs[i].addEventListener("click", function(event){filter(event)});
+  //부른 함수의 매개변수가 존재하면 function()에도 매개변수 넣어주기??
+  //addEventListener가 event를 받아옴
+} 
 
 function addTask() {
   let task = {
@@ -25,7 +31,7 @@ function addTask() {
   console.log(taskList);
   render();
 }
-function render() {
+function render() { //목록들을 그리는 함수
   let resultHTML = "";
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].isComplete == true) {
@@ -83,3 +89,25 @@ function deleteTask(id) {
   }
   render(); //값을 업데이트를 하면 ui도 업데이트하기 - 자동으로 해주는 리액트!
 }
+
+function filter(event){
+  console.log(filter,event.target.id);
+  let mode = event.target.id
+  let filterList = []
+  if(mode === "all") {
+    render();
+  }else if(mode === "ongoing") {
+    for(let i=0; taskList.length; i++) { //taskLisk 전체를 돌면서~
+      if(taskList[i].isComplete === false){
+        filterList.push(taskList[i]);
+      }
+    }
+    render();
+  } else if(mode === "done") {
+
+  }
+  //querySelectorAll과 addEventListener로 3가지의 경우를 가지고 왔고 target으로 지정해줌
+
+}
+
+
