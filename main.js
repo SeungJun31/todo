@@ -11,16 +11,35 @@
 let taskInput = document.getElementById("task-input");
 let addButton = document.getElementById("add-button");
 let taskList = [];
-let tabs = document.querySelectorAll(".task-tabs div")
+let underLine = document.getElementById("under-line");
+let tabs = document.querySelectorAll(".task-tabs div");
+let mode = "all"; //초기값
+let filterList = [];
+
+tabs.forEach((menu) =>
+  menu.addEventListener("click", (e) => horizontalIndicator(e))
+);
 addButton.addEventListener("click", addTask);
 
-for(let i=1; i<tabs.length; i++) {
-  tabs[i].addEventListener("click", function(event){filter(event)});
+function horizontalIndicator(e) {
+  underLine.style.width = e.target.offsetWidth + "px";
+  underLine.style.left = e.target.offsetLeft + "px";
+  underLine.style.top =
+    e.currentTarget.offsetTop + e.currentTarget.offsetHeight + "px";
+}
+//아이템의 길이를 offsetWidth와 offsetHeight으로 표현
+//아이템의 위치를 offsetTop과 offsetLeft로 표현 위와 왼쪽을 기준으로 얼마큼 떨어져 있는지
+
+for (let i = 1; i < tabs.length; i++) {
+  tabs[i].addEventListener("click", function (event) {
+    filter(event);
+  });
   //부른 함수의 매개변수가 존재하면 function()에도 매개변수 넣어주기??
   //addEventListener가 event를 받아옴
-} 
+}
 
 function addTask() {
+  //if (taskInput.value === ""){ return alert("할 일을 입력해주세요")};
   let task = {
     //여러개의 정보가 필요하면 객체 활용
     id: randomIdGenerate(),
@@ -31,29 +50,38 @@ function addTask() {
   console.log(taskList);
   render();
 }
-function render() { //목록들을 그리는 함수
+function render() {
+  //목록들을 그리는 함수
+  // 내가 선택한 탭에 따라서(if/mode) 리스트를 달리 보여준다.
   let resultHTML = "";
-  for (let i = 0; i < taskList.length; i++) {
-    if (taskList[i].isComplete == true) {
+  let list = [];
+  if (mode === "all") {
+    list = taskList;
+  } else {
+    list = filterList;
+  }
+
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].isComplete == true) {
       resultHTML += `<div id="task1">
-        <div class="task-done">${taskList[i].taskContent}</div>
+        <div class="task-done">${list[i].taskContent}</div>
       <div class="button">
-        <button id="reply" onclick="toggleComplete('${taskList[i].id}')">
+        <button id="reply" onclick="toggleComplete('${list[i].id}')">
         <img id ="reply-icon" src="images/reply-solid.svg" alt="" width="20px" padding-bottom:8px >
         </button> 
-        <button class="delete" onclick="deleteTask('${taskList[i].id}')">
+        <button class="delete" onclick="deleteTask('${list[i].id}')">
         <img class="icon-delete" src="images/background.svg" alt=""></img>
         </button>
       </div>
     </div>`;
     } else {
       resultHTML += `<div id="task2">
-          <div class="content">${taskList[i].taskContent}</div>
+          <div class="content">${list[i].taskContent}</div>
           <div class="button">
-            <button id="check" onclick="toggleComplete('${taskList[i].id}')">
+            <button id="check" onclick="toggleComplete('${list[i].id}')">
             <img id="check-icon" src="images/check-solid.svg" alt="" width="20px" hight="55px"></img>
             </button>
-            <button class="delete" onclick="deleteTask('${taskList[i].id}')">
+            <button class="delete" onclick="deleteTask('${list[i].id}')">
             <img class="icon-delete"src="images/background.svg" alt=""></img>
             </button>
           </div>
@@ -71,8 +99,7 @@ function toggleComplete(id) {
       break;
     }
   }
-  render();
-  console.log(taskList);
+  filter();
 }
 
 function randomIdGenerate() {
@@ -84,30 +111,39 @@ function deleteTask(id) {
   for (let i = 0; i < taskList.length; i++) {
     if (taskList[i].id == id) {
       taskList.splice(i, 1);
-      break;
     }
   }
-  render(); //값을 업데이트를 하면 ui도 업데이트하기 - 자동으로 해주는 리액트!
+  filter(); //값을 업데이트를 하면 ui도 업데이트하기 - 자동으로 해주는 리액트!
 }
 
-function filter(event){
-  console.log(filter,event.target.id);
-  let mode = event.target.id
-  let filterList = []
-  if(mode === "all") {
-    render();
-  }else if(mode === "ongoing") {
-    for(let i=0; taskList.length; i++) { //taskLisk 전체를 돌면서~
-      if(taskList[i].isComplete === false){
+function filter(event) {
+  mode = event.target.id;
+  console.log("filter", event.target.id);
+  //querySelectorAll과 addEventListener로 3가지의 경우를 가지고 왔고 target으로 지정해줌
+  if (mode === "all") {
+    render(); //전체 리스트 보여주기
+  } else if (mode === "ongoing") {
+    for (let i = 0; i < taskList.length; i++) {
+      //taskList 전체를 돌면서~
+      if (taskList[i].isComplete == false) {
         filterList.push(taskList[i]);
       }
     }
     render();
-  } else if(mode === "done") {
-
+  } else if (mode === "done") {
+    for (let i = 0; i < taskList.length; i++) {
+      //taskList 전체를 돌면서~
+      if (taskList[i].isComplete == true) {
+        filterList.push(taskList[i]);
+      }
+    }
   }
-  //querySelectorAll과 addEventListener로 3가지의 경우를 가지고 왔고 target으로 지정해줌
-
+  render();
 }
+//불린형은 =, ==까지만 ===없음
 
-
+function event() {
+  if (event == undefined) {
+    render();
+  }
+}
