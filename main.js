@@ -16,8 +16,8 @@ let tabs = document.querySelectorAll(".task-tabs div");
 let mode = "all"; //초기값
 let filterList = [];
 
-tabs.forEach((menu) =>
-  menu.addEventListener("click", (e) => horizontalIndicator(e))
+tabs.forEach((tabs) =>
+  tabs.addEventListener("click", (e) => horizontalIndicator(e))
 );
 addButton.addEventListener("click", addTask);
 
@@ -99,7 +99,7 @@ function toggleComplete(id) {
       break;
     }
   }
-  filter();
+  render();
 }
 
 function randomIdGenerate() {
@@ -113,12 +113,13 @@ function deleteTask(id) {
       taskList.splice(i, 1);
     }
   }
-  filter(); //값을 업데이트를 하면 ui도 업데이트하기 - 자동으로 해주는 리액트!
+  render(); //값을 업데이트를 하면 ui도 업데이트하기 - 자동으로 해주는 리액트!
 }
 
 function filter(event) {
   mode = event.target.id;
   console.log("filter", event.target.id);
+  filterList = []; //** 필터리스트 초기화해주기 - 위의 함수에서 사용했을 경우 오염 됌 */
   //querySelectorAll과 addEventListener로 3가지의 경우를 가지고 왔고 target으로 지정해줌
   if (mode === "all") {
     render(); //전체 리스트 보여주기
@@ -129,7 +130,6 @@ function filter(event) {
         filterList.push(taskList[i]);
       }
     }
-    render();
   } else if (mode === "done") {
     for (let i = 0; i < taskList.length; i++) {
       //taskList 전체를 돌면서~
@@ -139,11 +139,4 @@ function filter(event) {
     }
   }
   render();
-}
-//불린형은 =, ==까지만 ===없음
-
-function event() {
-  if (event == undefined) {
-    render();
-  }
-}
+} //불린형은 =, ==까지만 ===없음

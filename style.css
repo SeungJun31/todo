@@ -37,11 +37,11 @@ div.task-tabs{
     height: 4px;
     background-color: lightcoral;
     position: absolute;
-    width: 70px;
-    left: 7px;
-    top: 52px;
+    width: 0px;
+    left: 0px;
+    top: 0px;
     padding: 0;
-    margin-top: 12px;
+    margin-top: 0px;
     transition: 0.5s;;
 }
 #task1{
